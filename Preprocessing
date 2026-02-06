@@ -1,1 +1,23 @@
+#Load the library
+library(GEOquery)
+#Download data
+datGEO=getGEO(GEO="GSE24988")
 
+#create Sampleinfo file
+gp1 = datGEO[[1]]
+ sampleinfo=data.frame(gp1@phenoData@data)
+ dim(sampleinfo)
+# [1] 116  37
+data.frame(colnames(sampleinfo))
+#investigate first row
+data.frame(t(sampleinfo[1,]))
+
+#Contains relevant information: Title, Accession ID, Disease State
+sampleinfo2=sampleinfo[,c(1:2,36)] 
+str(sampleinfo2)
+
+colnames(sampleinfo2)[1]="Sample_Label"
+colnames(sampleinfo2)[2]="Accession_ID"
+colnames(sampleinfo2)[3]="Disease_State"
+
+sampleinfo2$Sample_Label=gsub("PF patient","PF",sampleinfo2$Sample_Label)
